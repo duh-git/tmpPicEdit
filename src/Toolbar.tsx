@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react';
+import { useRef, useState } from "react";
 import {
   AppBar,
   Box,
@@ -10,17 +10,17 @@ import {
   Toolbar as MuiToolbar,
   Tooltip,
   Typography,
-} from '@mui/material';
-import FileUploadIcon from '@mui/icons-material/FileUpload';
-import DownloadIcon from '@mui/icons-material/Download';
-import ColorizeIcon from '@mui/icons-material/Colorize';
-import PanToolIcon from '@mui/icons-material/PanTool';
-import PhotoSizeSelectLargeIcon from '@mui/icons-material/PhotoSizeSelectLarge';
-import TuneIcon from '@mui/icons-material/Tune';
-import BlurOnIcon from '@mui/icons-material/BlurOn';
-import type { ToolMode } from './types';
+} from "@mui/material";
+import FileUploadIcon from "@mui/icons-material/FileUpload";
+import DownloadIcon from "@mui/icons-material/Download";
+import ColorizeIcon from "@mui/icons-material/Colorize";
+import PanToolIcon from "@mui/icons-material/PanTool";
+import PhotoSizeSelectLargeIcon from "@mui/icons-material/PhotoSizeSelectLarge";
+import TuneIcon from "@mui/icons-material/Tune";
+import BlurOnIcon from "@mui/icons-material/BlurOn";
+import type { ToolMode } from "./types";
 
-export type SaveFormat = 'png' | 'jpeg' | 'gb7';
+export type SaveFormat = "png" | "jpeg" | "gb7";
 
 interface Props {
   onLoad: (file: File) => void;
@@ -49,7 +49,7 @@ export function Toolbar({
   const handlePick = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) onLoad(file);
-    e.target.value = '';
+    e.target.value = "";
   };
 
   const handleSave = (format: SaveFormat) => {
@@ -58,13 +58,13 @@ export function Toolbar({
   };
 
   return (
-    <AppBar position="static" color="default" elevation={0} sx={{ borderBottom: '1px solid #333' }}>
-      <MuiToolbar variant="dense" sx={{ gap: 1 }}>
-        <Typography variant="subtitle1" sx={{ fontWeight: 700, mr: 1 }}>
-          GraphZ
-        </Typography>
-        <Typography variant="caption" color="text.secondary" sx={{ mr: 2 }}>
-          редактор растровых изображений
+    <AppBar position="static" color="default" elevation={1}>
+      <MuiToolbar variant="dense" sx={{ gap: 1.5, py: 0.5 }}>
+        <Typography
+          variant="subtitle1"
+          sx={{ fontWeight: 800, letterSpacing: -0.5, color: "#9c27b0" }}
+        >
+          PicEditor
         </Typography>
 
         <Divider orientation="vertical" flexItem sx={{ mx: 1 }} />
@@ -80,6 +80,7 @@ export function Toolbar({
           variant="contained"
           startIcon={<FileUploadIcon />}
           onClick={() => inputRef.current?.click()}
+          sx={{ borderRadius: 20 }}
         >
           Загрузить
         </Button>
@@ -88,82 +89,78 @@ export function Toolbar({
           startIcon={<DownloadIcon />}
           disabled={!canSave}
           onClick={(e) => setAnchor(e.currentTarget)}
+          sx={{ borderRadius: 20 }}
         >
           Скачать
         </Button>
-        <Menu anchorEl={anchor} open={Boolean(anchor)} onClose={() => setAnchor(null)}>
-          <MenuItem onClick={() => handleSave('png')}>PNG (.png)</MenuItem>
-          <MenuItem onClick={() => handleSave('jpeg')}>JPEG (.jpg)</MenuItem>
-          <MenuItem onClick={() => handleSave('gb7')}>GrayBit-7 (.gb7)</MenuItem>
+        <Menu
+          anchorEl={anchor}
+          open={Boolean(anchor)}
+          onClose={() => setAnchor(null)}
+        >
+          <MenuItem onClick={() => handleSave("png")}>PNG (.png)</MenuItem>
+          <MenuItem onClick={() => handleSave("jpeg")}>JPEG (.jpg)</MenuItem>
+          <MenuItem onClick={() => handleSave("gb7")}>
+            GrayBit-7 (.gb7)
+          </MenuItem>
         </Menu>
 
         <Divider orientation="vertical" flexItem sx={{ mx: 1 }} />
 
         <Tooltip title="Перемещение (рука)">
-          <span>
-            <IconButton
-              size="small"
-              color={tool === 'hand' ? 'primary' : 'default'}
-              onClick={() => onToolChange('hand')}
-            >
-              <PanToolIcon fontSize="small" />
-            </IconButton>
-          </span>
+          <IconButton
+            size="small"
+            color={tool === "hand" ? "primary" : "default"}
+            onClick={() => onToolChange("hand")}
+            sx={{ borderRadius: 2 }}
+          >
+            <PanToolIcon fontSize="small" />
+          </IconButton>
         </Tooltip>
-        <Tooltip title="Пипетка: клик по пикселю показывает цвет">
-          <span>
-            <IconButton
-              size="small"
-              color={tool === 'eyedropper' ? 'primary' : 'default'}
-              onClick={() => onToolChange('eyedropper')}
-              disabled={!canSave}
-            >
-              <ColorizeIcon fontSize="small" />
-            </IconButton>
-          </span>
+        <Tooltip title="Пипетка">
+          <IconButton
+            size="small"
+            color={tool === "eyedropper" ? "primary" : "default"}
+            onClick={() => onToolChange("eyedropper")}
+            disabled={!canSave}
+            sx={{ borderRadius: 2 }}
+          >
+            <ColorizeIcon fontSize="small" />
+          </IconButton>
         </Tooltip>
 
         <Divider orientation="vertical" flexItem sx={{ mx: 1 }} />
 
-        <Tooltip title="Уровни: гистограмма и градационная коррекция">
-          <span>
-            <Button
-              size="small"
-              variant="outlined"
-              startIcon={<TuneIcon />}
-              onClick={onOpenLevels}
-              disabled={!canSave}
-            >
-              Уровни
-            </Button>
-          </span>
-        </Tooltip>
-        <Tooltip title="Изменить размер изображения с выбором алгоритма интерполяции">
-          <span>
-            <Button
-              size="small"
-              variant="outlined"
-              startIcon={<PhotoSizeSelectLargeIcon />}
-              onClick={onOpenResize}
-              disabled={!canSave}
-            >
-              Размер
-            </Button>
-          </span>
-        </Tooltip>
-        <Tooltip title="Фильтрация ядром свёртки 3×3 (резкость, размытие, границы)">
-          <span>
-            <Button
-              size="small"
-              variant="outlined"
-              startIcon={<BlurOnIcon />}
-              onClick={onOpenFilter}
-              disabled={!canSave}
-            >
-              Фильтр
-            </Button>
-          </span>
-        </Tooltip>
+        <Button
+          size="small"
+          variant="outlined"
+          startIcon={<TuneIcon />}
+          onClick={onOpenLevels}
+          disabled={!canSave}
+          sx={{ borderRadius: 20 }}
+        >
+          Уровни
+        </Button>
+        <Button
+          size="small"
+          variant="outlined"
+          startIcon={<PhotoSizeSelectLargeIcon />}
+          onClick={onOpenResize}
+          disabled={!canSave}
+          sx={{ borderRadius: 20 }}
+        >
+          Размер
+        </Button>
+        <Button
+          size="small"
+          variant="outlined"
+          startIcon={<BlurOnIcon />}
+          onClick={onOpenFilter}
+          disabled={!canSave}
+          sx={{ borderRadius: 20 }}
+        >
+          Фильтр
+        </Button>
 
         <Box sx={{ flex: 1 }} />
       </MuiToolbar>

@@ -69,18 +69,19 @@ export function StatusBar({ image, fileName, zoom, onZoomChange, onFit, zoomMin,
         alignItems: 'center',
         gap: 2,
         px: 2,
-        height: 32,
+        height: 36,
         flexShrink: 0,
-        bgcolor: '#0077cc',
-        color: '#fff',
+        bgcolor: '#2c3e50',          // тёмный slate вместо ярко-синего
+        color: '#ecf0f1',
         overflowX: 'auto',
         whiteSpace: 'nowrap',
+        borderTop: '1px solid #1a252f',
       }}
     >
       {image ? (
         <>
           {fileName && <Item label="Файл" value={fileName} />}
-          <Divider orientation="vertical" flexItem sx={{ borderColor: 'rgba(255,255,255,0.3)' }} />
+          <Divider orientation="vertical" flexItem sx={{ borderColor: 'rgba(255,255,255,0.2)' }} />
           <Item label="Ширина" value={`${image.width} px`} />
           <Item label="Высота" value={`${image.height} px`} />
           <Item label="Глубина цвета" value={image.meta.colorDepthLabel} />
@@ -91,7 +92,7 @@ export function StatusBar({ image, fileName, zoom, onZoomChange, onFit, zoomMin,
               <IconButton
                 size="small"
                 onClick={onFit}
-                sx={{ color: '#fff' }}
+                sx={{ color: '#ecf0f1', '&:hover': { backgroundColor: 'rgba(255,255,255,0.1)' } }}
               >
                 <FitScreenIcon fontSize="small" />
               </IconButton>
@@ -110,19 +111,16 @@ export function StatusBar({ image, fileName, zoom, onZoomChange, onFit, zoomMin,
             }}
             sx={{
               minWidth: 92,
-              color: '#fff',
-              '& .MuiOutlinedInput-notchedOutline': { borderColor: 'rgba(255,255,255,0.4)' },
-              '& .MuiSvgIcon-root': { color: '#fff' },
+              color: '#ecf0f1',
+              '& .MuiOutlinedInput-notchedOutline': { borderColor: 'rgba(255,255,255,0.3)' },
+              '& .MuiSvgIcon-root': { color: '#ecf0f1' },
               '& .MuiSelect-select': { py: '2px' },
+              '&:hover .MuiOutlinedInput-notchedOutline': { borderColor: 'rgba(255,255,255,0.6)' },
             }}
           >
-            <MenuItem value="" disabled>
-              Пресеты
-            </MenuItem>
+            <MenuItem value="" disabled>Пресеты</MenuItem>
             {PRESETS.map((p) => (
-              <MenuItem key={p} value={p}>
-                {pct(p)}%
-              </MenuItem>
+              <MenuItem key={p} value={p}>{pct(p)}%</MenuItem>
             ))}
           </Select>
           <TextField
@@ -138,11 +136,11 @@ export function StatusBar({ image, fileName, zoom, onZoomChange, onFit, zoomMin,
             }}
             sx={{
               width: 70,
-              '& .MuiInputBase-input': { color: '#fff', py: '2px' },
-              '& .MuiOutlinedInput-notchedOutline': { borderColor: 'rgba(255,255,255,0.4)' },
+              '& .MuiInputBase-input': { color: '#ecf0f1', py: '2px' },
+              '& .MuiOutlinedInput-notchedOutline': { borderColor: 'rgba(255,255,255,0.3)' },
             }}
             InputProps={{
-              endAdornment: <Typography variant="caption" sx={{ ml: 0.5 }}>%</Typography>,
+              endAdornment: <Typography variant="caption" sx={{ ml: 0.5, color: '#ecf0f1' }}>%</Typography>,
             }}
           />
         </>
